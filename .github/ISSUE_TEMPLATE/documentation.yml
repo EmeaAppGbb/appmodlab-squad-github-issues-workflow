@@ -1,0 +1,26 @@
+name: Documentation Request
+description: Request documentation improvements
+title: "[Docs]: "
+labels: ["documentation", "needs-triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Documentation Request
+      description: What documentation is needed?
+      placeholder: Describe what needs to be documented
+    validations:
+      required: true
+  
+  - type: dropdown
+    id: type
+    attributes:
+      label: Documentation Type
+      options:
+        - API Documentation
+        - User Guide
+        - Tutorial
+        - Reference
+        - Other
+    validations:
+      required: true
