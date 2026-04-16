@@ -6,12 +6,14 @@ How to decide who handles what.
 
 | Work Type | Route To | Examples |
 |-----------|----------|----------|
-| {domain 1} | {Name} | {example tasks} |
-| {domain 2} | {Name} | {example tasks} |
-| {domain 3} | {Name} | {example tasks} |
-| Code review | {Name} | Review PRs, check quality, suggest improvements |
-| Testing | {Name} | Write tests, find edge cases, verify fixes |
-| Scope & priorities | {Name} | What to build next, trade-offs, decisions |
+| Frontend/UI | Frontend | React components, CSS, layout, responsive design, Next.js pages |
+| Backend/API | Backend | tRPC routers, Express endpoints, database queries, Prisma models |
+| Bug fixes | QA | Reproduce bugs, write regression tests, verify fixes |
+| Testing | QA | Write tests, find edge cases, verify fixes, test coverage |
+| Architecture | Ralph | System design, trade-offs, decisions, code review |
+| Code review | Ralph | Review PRs, check quality, suggest improvements |
+| Scope & priorities | Ralph | What to build next, trade-offs, decisions |
+| Documentation | Scribe | README updates, API docs, architecture diagrams |
 | Session logging | Scribe | Automatic — never needs routing |
 
 ## Issue Routing

@@ -1,0 +1,46 @@
+=== Step 05: Configure Agent-Issue Mapping ===
+Date: 2026-04-16 19:52:55
+
+== Commands ==
+npx @bradygaster/squad-cli (team configuration)
+gh copilot -- -p "Define routing rules mapping issue labels to Squad agents..."
+
+== Team Roster (team.md) ==
+| Name     | Role                  | Status |
+|----------|-----------------------|--------|
+| Ralph    | Lead / Architect      | Active |
+| Frontend | UI/Frontend Developer | Active |
+| Backend  | API/Backend Developer | Active |
+| QA       | Testing & Quality     | Active |
+| Scribe   | Documentation         | Active |
+| @copilot | Coding Agent          | Active |
+
+== Routing Rules (routing.md) ==
+| Work Type       | Route To | Keywords                                          |
+|-----------------|----------|---------------------------------------------------|
+| Frontend/UI     | Frontend | ui, css, component, layout, page, tailwind        |
+| Backend/API     | Backend  | api, database, endpoint, prisma, trpc, auth       |
+| Bug fixes       | QA       | bug, fix, regression, test, coverage              |
+| Testing         | QA       | test, verify, reproduce, assertion                |
+| Architecture    | Ralph    | system design, trade-offs, code review            |
+| Documentation   | Scribe   | README, API docs, diagrams                        |
+
+== Agent Charters Created ==
+- .squad/agents/frontend/charter.md — Next.js/React/Tailwind specialist
+- .squad/agents/backend/charter.md — tRPC/Express/Prisma specialist
+- .squad/agents/qa/charter.md — Testing/QA specialist
+- .squad/agents/ralph/charter.md — Lead/Architect (existing)
+- .squad/agents/scribe/charter.md — Documentation (existing)
+
+== @copilot Capability Tiers ==
+🟢 Good fit: bug fix, test coverage, lint, small feature, scaffolding, docs
+🟡 Needs review: medium feature, refactoring, API endpoint, migration
+🔴 Not suitable: architecture, security, auth, encryption, performance
+
+== Label → Agent Mapping ==
+squad:ralph    → Ralph (Lead/Architect)
+squad:frontend → Frontend (UI Developer)
+squad:backend  → Backend (API Developer)
+squad:qa       → QA (Testing & Quality)
+squad:scribe   → Scribe (Documentation)
+squad:copilot  → @copilot (Coding Agent)
