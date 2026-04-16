@@ -15,5 +15,10 @@
   "devDependencies": {
     "turbo": "^1.10.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.36.1",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6"
   }
 }
