@@ -1,0 +1,35 @@
+=== Step 07: Document the Integration ===
+Date: 2026-04-16 18:47:46
+
+--- Documentation Created ---
+
+1. docs/INTEGRATION-GUIDE.md
+   - Architecture diagram (ASCII pipeline flow)
+   - SQUAD Agents table (Brain, Hands, Eyes, Mouth)
+   - GitHub Actions Workflows table
+   - Issue Templates table
+   - Detailed workflow steps (6 phases)
+   - Label system documentation (type, priority, effort, status)
+   - Configuration files reference
+   - Usage guide (creating issues, monitoring pipeline)
+   - Manual workflow dispatch commands
+   - Troubleshooting table
+
+--- Pipeline Flow ---
+NEW ISSUE ÔåÆ Brain Triage ÔåÆ Human Approval ÔåÆ Hands Implement ÔåÆ Eyes Review ÔåÆ Human Merge ÔåÆ Mouth Docs ÔåÆ Issue Closed
+
+--- Key Integration Points ---
+1. Issue templates provide structured data for Brain parsing
+2. Labels drive workflow transitions (needs-triage ÔåÆ triaged ÔåÆ approved ÔåÆ in-progress ÔåÆ done)
+3. GitHub Actions bridge GitHub events to SQUAD agent invocations
+4. SQUAD workflow YAMLs define the agent pipeline logic
+5. Human checkpoints at approval and merge gates
+6. agent-issue-mapping.yml routes issues to the correct pipeline
+
+--- Files Summary ---
+  .squad/agents   .squad/workflows   .squad/agent-issue-mapping.yml   .squad/team.yml   .squad/agents\brain.yml   .squad/agents\eyes.yml   .squad/agents\hands.yml   .squad/agents\mouth.yml   .squad/workflows\issue-to-pr.yml   .squad/workflows\issue-triage.yml   .squad/workflows\review-cycle.yml
+  .github/ISSUE_TEMPLATE   .github/workflows   .github/labeler.yml   .github/ISSUE_TEMPLATE\bug_report.yml   .github/ISSUE_TEMPLATE\config.yml   .github/ISSUE_TEMPLATE\documentation.yml   .github/ISSUE_TEMPLATE\feature_request.yml   .github/ISSUE_TEMPLATE\squad-task.yml   .github/workflows\ci.yml   .github/workflows\squad-docs.yml   .github/workflows\squad-implement.yml   .github/workflows\squad-review.yml   .github/workflows\squad-triage.yml
+  docs/INTEGRATION-GUIDE.md
+  assets/sample-issues/issue-1-bug-search-deleted.md
+  assets/sample-issues/issue-2-feature-syntax-highlight.md
+  assets/sample-issues/issue-3-performance-pagination.md

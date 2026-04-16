@@ -1,0 +1,43 @@
+=== Step 03: Configure Issue Templates ===
+Date: 2026-04-16 18:41:22
+
+--- Issue Templates Overview ---
+Templates in .github/ISSUE_TEMPLATE/:
+
+1. bug_report.yml (Enhanced)
+   - Added: Affected Component dropdown (web, api, shared, prisma, ci)
+   - Added: Environment field for browser/OS/Node info
+   - Added: Additional Context for SQUAD field
+   - SQUAD Brain auto-triages on creation
+
+2. feature_request.yml (Enhanced)
+   - Added: Target Component dropdown
+   - Added: Priority dropdown (Nice to have ÔåÆ Critical)
+   - Added: Acceptance Criteria textarea (checklist format)
+   - Added: Additional Context for SQUAD field
+
+3. documentation.yml (Enhanced)
+   - Added: Related Component dropdown
+   - Added: Current Documentation State field
+   - Added: Additional Context for SQUAD field
+   - Added: Architecture Decision Record as doc type option
+   - Routed to SQUAD Mouth agent
+
+4. squad-task.yml (NEW)
+   - Direct task submission to SQUAD pipeline
+   - Task Type: Bug Fix, Feature, Performance, Refactoring, Security, Docs, Testing, CI/CD
+   - Preferred Agent selector (Auto, Hands, Eyes, Mouth)
+   - Target Component dropdown
+   - Required Acceptance Criteria
+   - Optional Files to Modify list
+
+5. config.yml (NEW)
+   - Blank issues disabled (forces structured templates)
+   - Link to SQUAD workflow documentation
+
+--- SQUAD-Parseable Fields ---
+All templates now include:
+  - Structured dropdowns for component targeting
+  - "Additional Context for SQUAD" field
+  - Labels auto-applied: needs-triage (triggers Brain)
+  - Consistent field IDs for programmatic parsing

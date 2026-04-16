@@ -1,0 +1,92 @@
+=== Step 01: Explore the Application ===
+Date: 2026-04-16 18:38:57
+
+--- Project Structure ---
+.github
+assets
+packages
+prisma
+.github\ISSUE_TEMPLATE
+.github\workflows
+assets\outputs
+assets\screenshots
+node_modules\.bin
+node_modules\.cache
+node_modules\.prisma
+node_modules\@alloc
+node_modules\@babel
+node_modules\@bcoe
+node_modules\@devconnect
+node_modules\@esbuild
+node_modules\@istanbuljs
+node_modules\@jest
+node_modules\@jridgewell
+node_modules\@next
+node_modules\@nodelib
+node_modules\@prisma
+node_modules\@sinclair
+node_modules\@sinonjs
+node_modules\@swc
+node_modules\@tanstack
+node_modules\@trpc
+node_modules\@types
+node_modules\accepts
+node_modules\ansi-escapes
+
+
+--- Package.json (root) ---
+{
+  "name": "devconnect-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.36.1",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6"
+  }
+}
+
+
+--- Packages ---
+Web:  @devconnect/web  (Next.js 14 frontend with App Router)
+API:  @devconnect/api  (tRPC backend on Express, port 3001)
+Shared: @devconnect/shared (Zod schemas and TypeScript types)
+
+--- Key Application Features ---
+- Developer Q&A forum (DevConnect)
+- tRPC for type-safe API communication
+- In-memory question store with 3 sample questions
+- Prisma schema with Question, Answer, Tag models (soft delete support)
+- Tailwind CSS responsive design
+
+--- Existing GitHub Configuration ---
+- CI workflow: .github/workflows/ci.yml (Node 20, lint/build/test on push/PR)
+- Issue templates: bug_report.yml, feature_request.yml, documentation.yml
+- All templates add "needs-triage" label
+
+--- npm install ---
+All dependencies installed successfully.
+74 packages are looking for funding.
+
+--- Application Endpoints ---
+Frontend: http://localhost:3000 (Next.js)
+Backend:  http://localhost:3001/trpc (tRPC Express server)
+
+--- Sample Questions in Database ---
+1. "How to implement authentication in Next.js 14?" (42 votes, 7 answers)
+2. "Search results show deleted posts" (15 votes, 2 answers) [BUG]
+3. "Question list page loads slowly with 1000+ posts" (28 votes, 5 answers) [PERF]

@@ -1,0 +1,47 @@
+=== Step 05: Define Agent-Issue Mapping ===
+Date: 2026-04-16 18:45:02
+
+--- Agent-Issue Mapping (.squad/agent-issue-mapping.yml) ---
+
+Pipeline Mappings:
+  1. bug-fix-pipeline
+     Match: labels [bug, type/bug] or title [Bug]
+     Flow: Brain triage -> Hands fix (require tests + reproduction) -> Eyes review (require regression test)
+
+  2. feature-implementation-pipeline
+     Match: labels [enhancement, type/feature] or title [Feature]
+     Flow: Brain triage -> Hands implement (require tests + acceptance criteria) -> Eyes review
+
+  3. documentation-pipeline
+     Match: labels [documentation, type/docs] or title [Docs]
+     Flow: Brain triage -> Mouth write docs -> Eyes review (focus: accuracy, completeness)
+
+  4. performance-optimization-pipeline
+     Match: labels [performance, type/performance] or title patterns
+     Flow: Brain triage (require profiling) -> Hands optimize (require benchmark) -> Eyes review
+
+  5. security-fix-pipeline
+     Match: labels [security, type/security] or title patterns
+     Flow: Brain triage (auto-critical, notify team) -> Hands fix (require security review) -> Eyes review
+
+  6. squad-task-pipeline
+     Match: labels [squad-task] or title [SQUAD]
+     Flow: Brain triage -> Preferred agent implement -> Eyes review
+
+--- Label Definitions ---
+Type labels:    type/bug, type/feature, type/docs, type/performance, type/security
+Priority:       priority/critical, priority/high, priority/medium, priority/low
+Effort:         effort/XS, effort/S, effort/M, effort/L, effort/XL
+Agent:          agent/brain, agent/hands, agent/eyes, agent/mouth
+Status:         needs-triage, triaged, approved, in-progress, needs-review, done, squad-pr, squad-task
+
+--- GitHub Labeler (.github/labeler.yml) ---
+Auto-labels PRs based on file paths:
+  frontend    -> packages/web/**
+  backend     -> packages/api/**
+  shared      -> packages/shared/**
+  database    -> prisma/**
+  ci-cd       -> .github/workflows/**
+  squad-config -> .squad/**
+  documentation -> **/*.md
+  tests       -> **/*.test.*, **/*.spec.*
