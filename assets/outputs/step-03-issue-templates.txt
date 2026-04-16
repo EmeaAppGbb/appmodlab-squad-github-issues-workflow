@@ -1,0 +1,30 @@
+=== Step 03: Configure Issue Templates ===
+Date: 2026-04-16 19:50:46
+
+== Command ==
+gh copilot -- -p "Create GitHub issue templates for this Squad-integrated project..."
+
+== Actions Taken ==
+1. Created .github/ISSUE_TEMPLATE/squad-task.yml
+   - Squad-specific task template with automated agent routing
+   - Includes task type dropdown (Feature, Bug Fix, Code Review, Testing, etc.)
+   - Agent target selector (Auto/ralph/scribe)
+   - Acceptance criteria and priority fields
+   - Auto-labels with 'squad' and 'needs-triage'
+
+2. Updated .github/ISSUE_TEMPLATE/feature_request.yml
+   - Added 'squad' label for automated triage routing
+
+3. Updated .github/ISSUE_TEMPLATE/bug_report.yml
+   - Added 'squad' label for automated triage routing
+
+== Issue Template Inventory ==
+- feature_request.yml: labels=[enhancement, needs-triage, squad]
+- bug_report.yml: labels=[bug, needs-triage, squad]
+- documentation.yml: (existing, unchanged)
+- squad-task.yml: labels=[squad, needs-triage] (NEW)
+
+== Squad Integration ==
+All new issues created via feature_request, bug_report, or squad-task
+templates will automatically receive the 'squad' label, triggering the
+Squad triage workflow (squad-triage.yml) for automated agent assignment.

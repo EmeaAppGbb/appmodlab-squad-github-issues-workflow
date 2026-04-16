@@ -1,7 +1,7 @@
 name: Feature Request
 description: Suggest a new feature for DevConnect
 title: "[Feature]: "
-labels: ["enhancement", "needs-triage"]
+labels: ["enhancement", "needs-triage", "squad"]
 body:
   - type: markdown
     attributes:

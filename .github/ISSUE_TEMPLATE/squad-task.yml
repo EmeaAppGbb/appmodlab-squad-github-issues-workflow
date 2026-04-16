@@ -1,0 +1,70 @@
+name: Squad Task
+description: Create a task for automated Squad agent routing
+title: "[Squad Task]: "
+labels: ["squad", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template creates tasks that are automatically routed to Squad agents.
+        The 'squad' label triggers automated triage by the Squad lead agent.
+
+  - type: textarea
+    id: task-description
+    attributes:
+      label: Task Description
+      description: Describe the task to be completed
+      placeholder: What needs to be done?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: Task Type
+      description: What kind of work is this?
+      options:
+        - Feature Implementation
+        - Bug Fix
+        - Code Review
+        - Testing
+        - Documentation
+        - Refactoring
+        - Performance Optimization
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent-target
+    attributes:
+      label: Target Agent (optional)
+      description: If known, which Squad agent should handle this?
+      options:
+        - Auto (let Squad triage decide)
+        - ralph (lead/coordinator)
+        - scribe (documentation/logging)
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this task is complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
