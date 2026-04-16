@@ -1,0 +1,111 @@
+=== Step 07: Document Integration ===
+Date: 2026-04-16 19:55:09
+
+== Command ==
+gh copilot -- -p "Generate workflow diagram and usage guide for Squad + GitHub Issues integration"
+
+== Workflow Diagram (ASCII) ==
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    SQUAD + GITHUB ISSUES PIPELINE               │
+└─────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────┐     ┌──────────────┐     ┌──────────────────┐
+  │ Issue Created │────►│ Template Adds│────►│  squad-triage.yml│
+  │ (via template)│     │ 'squad' label│     │  (Lead analyzes) │
+  └──────────────┘     └──────────────┘     └────────┬─────────┘
+                                                      │
+                                          ┌───────────┴───────────┐
+                                          │ Reads team.md &       │
+                                          │ routing.md            │
+                                          │ Evaluates @copilot fit│
+                                          └───────────┬───────────┘
+                                                      │
+                              ┌────────────────────────┼────────────────────┐
+                              │                        │                    │
+                    ┌─────────▼─────┐      ┌──────────▼──────┐   ┌────────▼────────┐
+                    │squad:frontend  │      │ squad:backend   │   │ squad:copilot   │
+                    │squad:qa        │      │ squad:ralph     │   │ (auto-assign)  │
+                    │squad:scribe    │      │                 │   │                 │
+                    └─────────┬─────┘      └────────┬────────┘   └────────┬────────┘
+                              │                     │                     │
+                    ┌─────────▼─────────────────────▼─────────────────────▼──────┐
+                    │              squad-issue-assign.yml                         │
+                    │              (Posts assignment notification)                │
+                    └─────────────────────────┬──────────────────────────────────┘
+                                              │
+                    ┌─────────────────────────▼──────────────────────────────────┐
+                    │              squad-agent-dispatch.yml                       │
+                    │              - Creates work branch                          │
+                    │              - Dispatches to agent                          │
+                    │              - Handles /squad retriage                      │
+                    └─────────────────────────┬──────────────────────────────────┘
+                                              │
+                              ┌───────────────▼───────────────┐
+                              │  Agent works on branch         │
+                              │  squad/{member}/issue-{N}      │
+                              │  Opens PR → CI → Review → Merge│
+                              └───────────────────────────────┘
+
+== Periodic Maintenance ==
+
+  ┌─────────────────────────┐     ┌─────────────────────────────┐
+  │ squad-heartbeat.yml     │────►│ Ralph re-triages stale       │
+  │ (every 30 min + events) │     │ issues, assigns @copilot    │
+  └─────────────────────────┘     └─────────────────────────────┘
+
+  ┌─────────────────────────┐     ┌─────────────────────────────┐
+  │ sync-squad-labels.yml   │────►│ Ensures all squad:* labels   │
+  │ (on team.md push)       │     │ exist in repo               │
+  └─────────────────────────┘     └─────────────────────────────┘
+
+== Usage Guide ==
+
+### Creating Issues
+1. Go to Issues → New Issue
+2. Select template: Bug Report, Feature Request, or Squad Task
+3. Fill in details — the 'squad' label is auto-applied
+4. Submit — Squad triage begins automatically
+
+### Manual Triage
+- Add 'squad' label to any existing issue to trigger triage
+- Comment '/squad retriage' to re-evaluate assignment
+
+### Monitoring
+- Run 'npx @bradygaster/squad-cli triage' locally for real-time triage
+- Check squad-heartbeat.yml runs for periodic health checks
+- View .squad/agents/{name}/history.md for agent session logs
+
+### Customizing
+- Edit .squad/team.md to add/remove agents
+- Edit .squad/routing.md to change routing rules
+- Edit .squad/agents/{name}/charter.md for agent specialization
+- Push changes → sync-squad-labels.yml auto-syncs labels
+
+== Files Created/Modified in This Lab ==
+
+### New Files
+- .github/ISSUE_TEMPLATE/squad-task.yml
+- .github/workflows/squad-agent-dispatch.yml
+- .squad/agents/frontend/charter.md
+- .squad/agents/frontend/history.md
+- .squad/agents/backend/charter.md
+- .squad/agents/backend/history.md
+- .squad/agents/qa/charter.md
+- .squad/agents/qa/history.md
+- assets/outputs/step-01 through step-07
+
+### Modified Files
+- .github/ISSUE_TEMPLATE/feature_request.yml (added 'squad' label)
+- .github/ISSUE_TEMPLATE/bug_report.yml (added 'squad' label)
+- .squad/team.md (populated roster with 5 agents + @copilot)
+- .squad/routing.md (defined domain-to-agent routing)
+
+### From Squad Init
+- .squad/ directory (config, ceremonies, decisions, templates)
+- .copilot/ (skills, MCP config)
+- .github/agents/squad.agent.md
+- .github/workflows/squad-triage.yml
+- .github/workflows/squad-issue-assign.yml
+- .github/workflows/squad-heartbeat.yml
+- .github/workflows/sync-squad-labels.yml
