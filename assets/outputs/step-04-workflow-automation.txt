@@ -1,0 +1,33 @@
+=== Step 04: Set Up Workflow Automation ===
+Date: 2026-04-16 19:51:44
+
+== Command ==
+gh copilot -- -p "Create GitHub Actions workflows that trigger Squad agents based on issue labels..."
+
+== Existing Squad Workflows (from squad-cli init) ==
+1. squad-triage.yml — Triggers on 'squad' label, reads team.md, routes to agents
+2. squad-issue-assign.yml — Triggers on 'squad:{member}' labels, posts assignment
+3. squad-heartbeat.yml — Periodic Ralph triage (every 30 min + on events)
+4. sync-squad-labels.yml — Syncs squad/go/release/type labels from team.md
+5. ci.yml — Standard CI (lint, build, test)
+
+== New Workflow Created ==
+6. squad-agent-dispatch.yml — Enhanced dispatch with:
+   - Branch creation per agent/issue (squad/{member}/issue-{N})
+   - Issue category detection (bug-fix, feature, task)
+   - Agent charter inclusion in dispatch
+   - /squad retriage command support via comments
+   - Re-triage workflow (removes squad:* labels, re-applies 'squad')
+
+== Workflow Flow ==
+Issue Created → 'squad' label auto-applied (from template)
+  → squad-triage.yml: Lead analyzes + assigns squad:{member} label
+    → squad-issue-assign.yml: Posts assignment notification
+    → squad-agent-dispatch.yml: Creates work branch, dispatches agent
+      → Agent works on squad/{member}/issue-{N} branch
+        → Opens PR → CI runs → Review → Merge
+
+== Re-triage Flow ==
+Comment '/squad retriage' on any issue
+  → squad-agent-dispatch.yml: Removes squad:* labels, adds 'squad'
+    → squad-triage.yml: Lead re-evaluates and re-assigns

@@ -1,0 +1,117 @@
+name: Squad Agent Dispatch
+
+on:
+  issues:
+    types: [labeled, assigned]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Dispatch work when squad member labels are applied
+  dispatch-to-agent:
+    if: >-
+      github.event_name == 'issues' &&
+      github.event.action == 'labeled' &&
+      startsWith(github.event.label.name, 'squad:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse agent assignment and create work branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const issue = context.payload.issue;
+            const label = context.payload.label.name;
+            const memberName = label.replace('squad:', '').toLowerCase();
+
+            // Read routing rules
+            let routingFile = '.squad/routing.md';
+            if (!fs.existsSync(routingFile)) {
+              routingFile = '.ai-team/routing.md';
+            }
+
+            // Read agent charter if available
+            const charterPath = .squad/agents/+memberName+/charter.md;
+            let charter = 'No specific charter found';
+            if (fs.existsSync(charterPath)) {
+              charter = fs.readFileSync(charterPath, 'utf8').substring(0, 500);
+            }
+
+            // Determine issue category from labels
+            const issueLabels = issue.labels.map(l => l.name);
+            const isBug = issueLabels.some(l => l.includes('bug'));
+            const isFeature = issueLabels.some(l => l.includes('enhancement') || l.includes('feature'));
+            const isTask = issueLabels.some(l => l.includes('squad'));
+
+            const category = isBug ? 'bug-fix' : isFeature ? 'feature' : 'task';
+
+            // Post dispatch notification
+            const comment = [
+              ### ⚡ Agent Dispatch — +memberName,
+              `,
+              **Category:** +category,
+              **Branch:** \squad/+memberName+/issue-+issue.number+\`,
+              **Agent Charter:** +charter.split('\n')[0],
+              `,
+              > Workflow dispatched. Agent will begin work on the designated branch.,
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: comment
+            });
+
+            core.info(Dispatched issue #+issue.number+ to +memberName+ (+category+));
+
+  # Handle re-triage requests via comments
+  retriage-on-comment:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      contains(github.event.comment.body, '/squad retriage')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Re-triage issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+
+            // Remove existing squad:* labels
+            const squadLabels = issue.labels
+              .filter(l => l.name.startsWith('squad:'))
+              .map(l => l.name);
+
+            for (const label of squadLabels) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                name: label
+              });
+            }
+
+            // Re-add base squad label to trigger triage
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['squad']
+            });
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: '🔄 Re-triage requested. Squad Lead will re-evaluate this issue.'
+            });
