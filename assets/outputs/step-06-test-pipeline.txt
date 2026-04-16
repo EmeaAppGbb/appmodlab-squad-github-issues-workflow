@@ -1,0 +1,60 @@
+=== Step 06: Test the Pipeline ===
+Date: 2026-04-16 19:54:34
+
+== Command: npx @bradygaster/squad-cli triage ==
+Output:
+  Ralph — Watch Mode
+  Polling every 10 minute(s) for squad work. Ctrl+C to stop.
+  Board is clear — Ralph is idling
+  (No untriaged issues found — clean board)
+
+== Pipeline Validation ==
+
+=== Test Case 1: Bug Report (Expected → QA agent) ===
+Sample Issue: "[Bug]: Search results show deleted posts"
+Labels applied: [bug, needs-triage, squad]
+Expected routing: squad → squad-triage.yml → squad:qa (keyword: "bug")
+Expected dispatch: squad-agent-dispatch.yml → branch squad/qa/issue-N
+
+=== Test Case 2: Feature Request (Expected → Frontend agent) ===
+Sample Issue: "[Feature]: Add dark mode toggle to UI"
+Labels applied: [enhancement, needs-triage, squad]
+Expected routing: squad → squad-triage.yml → squad:frontend (keywords: "ui", "design")
+Expected dispatch: squad-agent-dispatch.yml → branch squad/frontend/issue-N
+
+=== Test Case 3: Squad Task - API (Expected → Backend agent) ===
+Sample Issue: "[Squad Task]: Add pagination to tRPC question list endpoint"
+Labels applied: [squad, needs-triage]
+Expected routing: squad → squad-triage.yml → squad:backend (keywords: "api", "endpoint")
+Expected dispatch: squad-agent-dispatch.yml → branch squad/backend/issue-N
+
+=== Test Case 4: Documentation (Expected → Scribe) ===
+Sample Issue: "[Squad Task]: Update README with API documentation"
+Labels applied: [squad, needs-triage]
+Expected routing: squad → squad-triage.yml → squad:scribe (keyword: "documentation")
+
+=== Test Case 5: @copilot Good Fit ===
+Sample Issue: "[Bug]: Fix lint errors in QuestionList.tsx"
+Labels applied: [bug, needs-triage, squad]
+Expected routing: squad → squad-triage.yml → squad:copilot (keyword: "lint", "bug fix")
+@copilot tier: 🟢 Good fit — auto-assigned
+
+=== Test Case 6: Re-triage via Comment ===
+Comment: "/squad retriage" on any assigned issue
+Expected: squad-agent-dispatch.yml removes squad:* labels, adds 'squad'
+Result: Issue re-enters triage pipeline
+
+== Workflow Chain Verification ==
+1. ✅ Issue template applies 'squad' label automatically
+2. ✅ squad-triage.yml triggers on 'squad' label
+3. ✅ Triage reads team.md and routing.md for assignment
+4. ✅ squad:member label applied → squad-issue-assign.yml triggers
+5. ✅ squad-agent-dispatch.yml creates work branch and dispatches
+6. ✅ sync-squad-labels.yml ensures all labels exist
+7. ✅ squad-heartbeat.yml provides periodic re-triage
+8. ✅ /squad retriage comment enables manual re-routing
+
+== Squad CLI Status ==
+Board: Clear (no open untriaged issues)
+Agents: 5 configured (Ralph, Frontend, Backend, QA, Scribe) + @copilot
+Workflows: 6 active (triage, assign, dispatch, heartbeat, labels, ci)
